@@ -1,12 +1,28 @@
 # -*- coding: utf-8 -*-
-from os.path import dirname, join
 from setuptools import setup
 
-with open(join(dirname(__file__), 'requirements.txt'), 'rb') as f:
-    requirements = f.read().splitlines()
+requirements = [
+    'cffi==1.1.2',
+    'cryptography==0.9.3',
+    'cssselect==0.9.1',
+    'enum34==1.0.4',
+    'idna==2.0',
+    'ipaddress==1.0.14',
+    'loginform==1.0',
+    'lxml==3.4.4',
+    'pyasn1==0.1.8',
+    'pycparser==2.14',
+    'pyOpenSSL==0.15.1',
+    'queuelib==1.2.2',
+    'Scrapy==1.0.1',
+    'six==1.9.0',
+    'Twisted==15.2.1',
+    'w3lib==1.11.0',
+    'zope.interface==4.1.2',
+]
 
 setup(name='skoober',
-      version='0.1.1',
+      version='0.1.2',
       license='MIT',
       description='Extract user\'s data from Skoob.com.br',
       author='Guido Luz Percú',
