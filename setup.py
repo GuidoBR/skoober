@@ -22,7 +22,7 @@ requirements = [
 ]
 
 setup(name='skoober',
-      version='0.1.2',
+      version='0.2',
       license='MIT',
       description='Extract user\'s data from Skoob.com.br',
       author='Guido Luz Percú',
