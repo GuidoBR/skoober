@@ -10,4 +10,4 @@ pip install skoober
 
 ## Usage
 
-scrapy crawl skoob
+scrapy crawl -a user=login@server.com -a password=secretpassword skoob

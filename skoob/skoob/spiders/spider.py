@@ -5,11 +5,15 @@ import re
 
 
 class SkoobSpider(scrapy.Spider):
+
     name = "skoob"
     start_urls = ['http://skoob.com.br/login/']
 
-    user = "teste@gmail.com"
-    password = "senha"
+    def __init__(self, *args, **kwargs):
+        super(SkoobSpider, self).__init__(*args, **kwargs)
+
+        self.user = kwargs.get('user')
+        self.password = kwargs.get('password')
 
     def parse(self, response):
         args, url, method = fill_login_form(
