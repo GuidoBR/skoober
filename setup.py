@@ -1,13 +1,12 @@
-try:
-    from setuptools import setup
-except ImportError:
-    from distutils.core import setup
+# -*- coding: utf-8 -*-
+from os.path import dirname, join
+from setuptools import setup
 
-with open('requirements.txt') as f:
+with open(join(dirname(__file__), 'requirements.txt'), 'rb') as f:
     requirements = f.read().splitlines()
 
 setup(name='skoober',
-      version='0.1',
+      version='0.1.1',
       license='MIT',
       description='Extract user\'s data from Skoob.com.br',
       author='Guido Luz Percú',
