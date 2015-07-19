@@ -10,8 +10,10 @@ class SkoobSpider(scrapy.Spider):
     start_urls = ['http://skoob.com.br/login/']
 
     def __init__(self, *args, **kwargs):
-        super(SkoobSpider, self).__init__(*args, **kwargs)
+        if isinstance(kwargs, type({})) and args is not None:
+            kwargs = args[0]
 
+        super(SkoobSpider, self).__init__(*args, **kwargs)
         self.user = kwargs.get('user')
         self.password = kwargs.get('password')
 
