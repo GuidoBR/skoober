@@ -10,7 +10,9 @@ class SkoobSpider(scrapy.Spider):
     start_urls = ['http://skoob.com.br/login/']
 
     def __init__(self, *args, **kwargs):
-        if isinstance(kwargs, type({})) and args is not None:
+        if not args and not kwargs:
+            raise Exception('No username and password provided')
+        if isinstance(kwargs, type({})) and args:
             kwargs = args[0]
 
         super(SkoobSpider, self).__init__(*args, **kwargs)
@@ -25,12 +27,19 @@ class SkoobSpider(scrapy.Spider):
             url,
             method=method,
             formdata=args,
-            callback=self.after_login)
+            callback=self._after_login)
 
-    def after_login(self, response):
-        user_id = re.search("[0-9]{1,}", response.url).group(0)
-        shelf_url = "http://www.skoob.com.br/estante/livros/todos/" + user_id
-        return Request(shelf_url, self.get_all_books)
+    def _get_user_id(self, user_url):
+        """Return the user id
+        user_url = "http://www.skoob.com.br/usuario/000000-username"
+        return 000000
+        """
+        return re.search("[0-9]{1,}", user_url).group(0)
+
+    def _after_login(self, response):
+        shelf_url = "http://www.skoob.com.br/estante/livros/todos/"
+        shelf_user_url = shelf_url + self._get_user_id(response.url)
+        return Request(shelf_user_url, self.get_all_books)
 
     def get_all_books(self, response):
         print("########")
