@@ -1,7 +1,9 @@
 import scrapy
-from scrapy.http import FormRequest, Request
-from loginform import fill_login_form
 import re
+import json
+from scrapy.http import Request
+from scrapy.selector import Selector
+from selenium import webdriver
 
 
 class SkoobSpider(scrapy.Spider):
@@ -18,30 +20,48 @@ class SkoobSpider(scrapy.Spider):
         super(SkoobSpider, self).__init__(*args, **kwargs)
         self.user = kwargs.get('user')
         self.password = kwargs.get('password')
+        self.browser = webdriver.Firefox()
 
     def parse(self, response):
-        args, url, method = fill_login_form(
-            response.url, response.body, self.user, self.password)
+        self._login_page(response)
+        self._navigate_to_bookcase()
+        books = self._get_all_books()
+        print('{} Books found'.format(len(books)))
+        with open('books.json', 'w') as book_file:
+            book_file.write(json.dumps(books))
+        print('Books.json generated')
 
-        return FormRequest(
-            url,
-            method=method,
-            formdata=args,
-            callback=self._after_login)
+    def _login_page(self, response):
+        login_page = self.browser.get(response.url)
+        login = self.browser.find_element_by_id("UsuarioEmail")
+        login.send_keys(self.user)
+        password = self.browser.find_element_by_id("UsuarioSenha")
+        password.send_keys(self.password)
+        password.submit()
 
-    def _get_user_id(self, user_url):
-        """Return the user id
-        user_url = "http://www.skoob.com.br/usuario/000000-username"
-        return 000000
-        """
-        return re.search("[0-9]{1,}", user_url).group(0)
+    def _navigate_to_bookcase(self):
+        self.browser.find_element_by_id("topo-menu-conta").click()
+        self.browser.find_element_by_css_selector("#topo-menu-conta-hover > li:nth-child(2) > a:nth-child(1)").click()
+        self.browser.find_element_by_css_selector("a.bt_est:nth-child(2)").click()
 
-    def _after_login(self, response):
-        shelf_url = "http://www.skoob.com.br/estante/livros/todos/"
-        shelf_user_url = shelf_url + self._get_user_id(response.url)
-        return Request(shelf_user_url, self.get_all_books)
+    def _get_total_books(self):
+        return int(self.browser.find_element_by_css_selector(".blistaon > span:nth-child(1)").text)
 
-    def get_all_books(self, response):
-        print("########")
-        print(response.css('div.livro-capa').extract())
-        print("########")
+    def _get_all_books(self):
+        total_books = self._get_total_books()
+        books = []
+        while (len(books) < total_books):
+            books.extend(self._extract_books_from_page())
+            self.browser.find_element_by_css_selector('#corpo > div:nth-child(2) > div:nth-child(5) > div:nth-child(2) > div:nth-child(1) > div:nth-child(2) > ul:nth-child(1) > li:nth-child(8) > a:nth-child(1)').click()
+        return books
+
+    def _extract_books_from_page(self):
+        content = self.browser.page_source
+        books_from_page = Selector(text=content).css('.estante-livros-vertical')
+        books_info = []
+        for book in books_from_page:
+            books_info.append({
+                'title': book.css('.livro-conteudo').css('h3').extract(),
+                'content': book.css('.livro-conteudo').css('p').extract()
+            })
+        return books_info
