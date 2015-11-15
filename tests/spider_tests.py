@@ -34,17 +34,5 @@ class SpiderTests(TestCase):
         with self.assertRaises(Exception):
             spider.SkoobSpider()
 
-    def test_return_user_id_from_complete_profile_url(self):
-        profile_url = "http://www.skoob.com.br/usuario/133113-guidobr"
-        result = self.crawler._get_user_id(profile_url)
-        expected = "133113"
-        self.assertEqual(expected, result)
-
-    def test_return_user_id_from_simplified_profile_url(self):
-        profile_url = "http://www.skoob.com.br/usuario/133113"
-        result = self.crawler._get_user_id(profile_url)
-        expected = "133113"
-        self.assertEqual(expected, result)
-
 if __name__ == "__main__":
     unittest.main()
