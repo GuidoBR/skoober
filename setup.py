@@ -22,9 +22,9 @@ requirements = [
 ]
 
 setup(name='skoober',
-      version='0.2',
+      version='0.3',
       license='MIT',
-      description='Extract user\'s data from Skoob.com.br',
+      description='Extract user\'s books from Skoob.com.br',
       author='Guido Luz Percú',
       author_email='guidopercu@gmail.com',
       url='http://github.com/GuidoBR/skoober',
@@ -32,7 +32,7 @@ setup(name='skoober',
       py_modules=['skoober'],
       install_requires=requirements,
       classifiers=[
-          'Development Status :: 2 - Pre-Alpha',
+          'Development Status :: 3 - Alpha',
           'License :: OSI Approved :: MIT License',
           'Operating System :: OS Independent',
           'Programming Language :: Python',
