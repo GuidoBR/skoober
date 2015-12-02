@@ -1,7 +1,5 @@
 import scrapy
-import re
 import json
-from scrapy.http import Request
 from scrapy.selector import Selector
 from selenium import webdriver
 
@@ -32,7 +30,7 @@ class SkoobSpider(scrapy.Spider):
         print('Books.json generated')
 
     def _login_page(self, response):
-        login_page = self.browser.get(response.url)
+        self.browser.get(response.url)
         login = self.browser.find_element_by_id("UsuarioEmail")
         login.send_keys(self.user)
         password = self.browser.find_element_by_id("UsuarioSenha")
