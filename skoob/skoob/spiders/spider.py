@@ -65,3 +65,38 @@ class SkoobSpider(scrapy.Spider):
                 'content': book.css('.livro-conteudo').css('p').extract()
             })
         return books_info
+
+    def goodreads_header():
+        return [
+            'Book Id',
+            'Title',
+            'Author',
+            'Author l-f',
+            'Additional Authors',
+            'ISBN',
+            'ISBN13',
+            'My Rating',
+            'Average Rating',
+            'Publisher',
+            'Binding',
+            'Number of Pages',
+            'Year Published',
+            'Original Publication Year',
+            'Date Read',
+            'Date Added',
+            'Bookshelves',
+            'Bookshelves with positions',
+            'Exclusive Shelf',
+            'My Review',
+            'Spoiler',
+            'Private Notes',
+            'Read Count',
+            'Recommended For',
+            'Recommended By',
+            'Owned Copies',
+            'Original Purchase Date',
+            'Original Purchase Location',
+            'Condition',
+            'Condition Description',
+            'BCID'
+        ]
