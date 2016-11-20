@@ -11,12 +11,19 @@ pip install skoober
 
 ## Usage example
 
-To get the data from your Skoob bookshelve, on the skoob/ directory use the following command (make sure you're using Python 2.7):
+To get the data from your Skoob bookshelve, on the skoob/ directory use the following command:
 
-scrapy crawl -a user=login@server.com -a password=secretpassword skoob
+```sh
+python skoober.py <skoob-user_id>
+```
+
+It'll generate a json file with all your books from Skoob
 
 ## Release History
 
+* 0.4
+    * Get data using Skoob's API
+    * Drop Selenium and Scrapy
 * 0.3.1
     * Bug fixes
 * 0.3
