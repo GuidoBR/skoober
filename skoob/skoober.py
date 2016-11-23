@@ -27,7 +27,7 @@ def save_json(data, filename="skoob.json"):
 
 def save_csv(data, filename="skoob.csv"):
     header = ["Title", "Author", "ISBN", "My Rating", "Average Rating", 
-            "Publisher", "Binding", "Year Published", "Original Publication Year"
+            "Publisher", "Binding", "Year Published", "Original Publication Year",
             "Date Read", "Date Added", "Bookshelves", "My Review"]
 
     with open(filename, 'w') as csvfile:
