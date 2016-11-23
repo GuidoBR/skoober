@@ -1,5 +1,6 @@
 import requests
 import json
+import csv
 
 BASE_URL = "https://www.skoob.com.br"
 
@@ -24,12 +25,33 @@ def save_json(data, filename="skoob.json"):
         json.dump(data, output)
 
 
+def save_csv(data, filename="skoob.csv"):
+    header = ["Title", "Author", "ISBN", "My Rating", "Average Rating", 
+            "Publisher", "Binding", "Year Published", "Original Publication Year"
+            "Date Read", "Date Added", "Bookshelves", "My Review"]
+
+    with open(filename, 'w') as csvfile:
+        writer = csv.writer(csvfile, delimiter=',', quotechar='|', quoting=csv.QUOTE_MINIMAL)
+        writer.writerow(header)
+        for book in data:
+            writer.writerow(book)
+
+
+
+def export_to_goodreads(data):
+    books = []
+    for book in data:
+        b = book['edicao']
+        goodread_book = [b['titulo'], b['autor'], b['isbn'], 0, 0, b['editora'], '', b['ano'], '', '', '', '', '']
+        books.append(goodread_book)
+
+    return books
+
+
 def main(user_id):
     json_books = (get_books(user_id))
-    save_json(json_books)
-    books = books_title(json_books)
-
-    print("Total de livros: {} - Livros mais recentes: {}".format(len(books), books[0:5]))
+    csv_books = export_to_goodreads(json_books)
+    save_csv(csv_books)
 
 if __name__ == "__main__":
     import sys
