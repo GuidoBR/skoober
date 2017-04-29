@@ -60,3 +60,4 @@ venv/
 .ropeproject/
 books.json
 *.swp
+skoob.csv
